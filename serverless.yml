@@ -1,0 +1,22 @@
+service: meka-boilerplate
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+
+functions:
+  helloMeka:
+    name: "meka-boilerplate-helloMeka"
+    handler: handler.helloMeka
+
+custom:
+  webpack:
+    webpackConfig: "webpack.config.js"
+    packager: "yarn"
+    includeModules: true
+  serverless-offline:
+    port: 3002

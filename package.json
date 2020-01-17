@@ -1,0 +1,23 @@
+{
+  "name": "meka-boilerplate",
+  "version": "1.0.0",
+  "main": "handler.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "SLS_DEBUG=* sls offline --watch"
+  },
+  "dependencies": {
+    "@meka-js/cli": "^0.0.8",
+    "@meka-js/core": "^0.0.6"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.3",
+    "@babel/runtime": "^7.8.3",
+    "babel-loader": "^8.0.6",
+    "serverless": "^1.61.1",
+    "serverless-offline": "^5.12.1",
+    "serverless-webpack": "^5.3.1",
+    "webpack": "^4.41.5",
+    "webpack-node-externals": "^1.7.2"
+  }
+}
