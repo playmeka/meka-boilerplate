@@ -3,9 +3,9 @@ import runGreedyStrategy from "./strategies/greedyStrategy"
 import runRandomStrategy from "./strategies/randomStrategy"
 
 export const random = async event => {
-  return runRandomStrategy(event);
+  return await runRandomStrategy(event);
 };
 
 export const greedy = async event => {
-  return runGreedyStrategy(event);
+  return await runGreedyStrategy(event);
 };
