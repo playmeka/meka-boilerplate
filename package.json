@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@meka-js/cli": "^0.0.12",
-    "@meka-js/core": "^0.0.8"
+    "@meka-js/core": "^0.0.9"
   },
   "devDependencies": {
     "@babel/core": "^7.8.3",

@@ -9,9 +9,12 @@ provider:
   runtime: nodejs12.x
 
 functions:
-  helloMeka:
-    name: "meka-boilerplate-helloMeka"
-    handler: handler.helloMeka
+  greedy:
+    name: "meka-boilerplate-greedy"
+    handler: handler.greedy
+  random:
+    name: "meka-boilerplate-random"
+    handler: handler.random
 
 custom:
   webpack:
