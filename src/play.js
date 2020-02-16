@@ -1,18 +1,23 @@
+require("dotenv").config();
 import MekaClient from "@meka-js/client";
 
-const doTick = game => {
-  console.log("TICK", game.turn);
-  // Your code here
+// Meka config
+const gameId = process.env.GAME_ID || "";
+const apiUrl = process.env.MEKA_API_URL || "http://localhost:3000";
+const websocketUrl = process.env.MEKA_WEB_SOCKET_URL || "ws://localhost:3000";
+const apiKey = process.env.MEKA_API_KEY || "";
+const apiSecret = process.env.MEKA_API_SECRET || "";
+
+const doWork = () => {
+  const meka = new MekaClient({ gameId, apiKey, apiSecret });
+  meka
+    .connect()
+    .then(() => {
+      console.log("Connected to MEKA", meka);
+    })
+    .catch(err => {
+      console.error(err);
+    });
 };
 
-// Fill in details
-const gameUid = "test";
-const websocketUrl = "ws://localhost:8000";
-
-const meka = new MekaClient({
-  gameUid,
-  websocketUrl,
-  onTick: doTick
-});
-
-console.log("Started Meka client", meka);
+doWork();
