@@ -38,21 +38,21 @@ const collectFood = (meka: MekaClient, team: Team) => {
 };
 
 const attackEnemyHQ = (meka: MekaClient, team: Team) => {
-  const enemyTeam = meka.game.teams.filter(t => t.id !== team.id)[0];
+  const enemyTeam = meka.game.teams.find(t => t.id !== team.id);
   const enemyHq = enemyTeam.hq;
   team.fighters.forEach(fighter => {
-    if (!meka.unitIsBusy(fighter)) {
-      const command = new AttackCommand({
-        unit: fighter,
-        args: { targetId: enemyHq.id }
-      });
-      meka.sendCommand(command);
-    }
+    if (meka.unitIsBusy(fighter)) return;
+    const command = new AttackCommand({
+      unit: fighter,
+      args: { targetId: enemyHq.id }
+    });
+    meka.sendCommand(command);
   });
 };
 
 const doTick = (meka: MekaClient, teamId: string) => {
   const team = meka.game.getTeam(teamId);
+  if (!team) throw new Error("No team found for ID: " + teamId);
   console.log("Start tick", meka.turn);
   collectFood(meka, team);
   attackEnemyHQ(meka, team);
