@@ -115,93 +115,21 @@ Ranged | `RangedFighter` | 24 | 7 | +4 attack against Infantry
 HQ | `HQ` | 500 | 6 | N/A
 Citizen | `Citizen` | 10 | 0 | N/A
 
+## Use `commander.js` to pass arguments through CLI
+
+Instead of updating your `.env` for every game, you can pass in config arguments like the game ID through the command line. The `cli.ts` example script uses [commander.js](https://github.com/tj/commander.js/) to parse CLI arguments. Try it like this:
+```
+ts-node examples/cli.ts tick <game ID>
+```
+You can also pass the `--help` argument to see the set of full options. Ultimately, you may structure your code however you like. Our goal here is just to provide helpful examples to get started.
 
 # Reference
 
-## Writing a strategy
+The examples given in `meka-boilerplate` cover only some of the functionality provided by the MEKA game engine. For a full list of functionality, read the documentation for `meka-core` and `meka-client`.
 
-This section introduces different aspects of writing a new strategy for Meka. Please see the `/strategies` folder for sample strategies. At its core, writing your strategy is simple: You receive the game state as the `event` input, and return an array of `Actions` (to be discussed in more detail down below).
+#### meka-core
+The `meka-core` library encapsulates all of the MEKA game engine logic. Games can be serialized and deserialized, and you'll use `meka-core` to structure all interactions with the game engine. [Read the meka-core docs here](https://github.com/playmeka/meka-core).
 
-TODO: Brief introduction to serverless handlers
+#### meka-client
+The `meka-client` library includes functionality for interacting with the MEKA game server. The game server uses WebSockets to receive and broadcast messages to and from players' clients. Each instance of `meka-client` is an event emitter, so you can subscribe to particular events. [Read the meka-client docs here](https://github.com/playmeka/meka-client).
 
-### Game state
-
-The tutorial game is initiated with a 12x12 board with two opposing teams. ~20% of the board is walls (agents cannot move through these) and another ~20% is food (sustenance for growing your population). Each team starts with a single citizen, and the population cap is 10. 
-
-Spawning new citizens cost 2 food, spawning new fighters cost 4 food. Citizens can collect food, and fighters can attack the enemy or defend your base. Your starting HQ has an HP of 100. When a team loses its HQ (its `HP <= 0`), they lose the game.
-
-### Strategy input
-
-Your strategy implemented in `handler.js` will receive an event input. This is an object with two important fields: `game` and `teamId`. `teamId` is the string identifier for your team. `game` is a JSON serialized game state that has information on teams, the placement of walls, food and agents (HQs, citizens, fighters).
-
-`@meka-js/core` (TypeScript/Javascript library that implements the core game engine) exports some utility functions to parse the `game` JSON:
-
-```
-import { Game } from "@meka-js/core";
-const game = Game.fromJSON(event.game);
-```
-
-Parsed `game` object has the following fields:
-
-```
-const myTeam = game.getTeam(event.teamId);
-const { hq, citizens, fighters } = myTeam;
-# citizens is an array of Citizen objects
-# fighters is an array of Fighter objects
-```
-
-`HQ` is the homebase for your team. It's a 2x2 area marked in the map. `HQ` spawns `Citizens` and `Fighters`
-`Citizen` is the agent that collects food
-`Fighter` is the agent that can deal damage to enemy citizens, fighters or HQs
-
-### Game engine basics
-
-The game engine has the following exports available for use in your strategy: 
-```
-import { Game, Action, Team, HQ, ObjectWithPosition, Position, Citizen, Fighter, Food, Wall } from "@meka-js/core";
-```
-
-`HQ`, `Citizen`, `Fighter`, `Food` and `Wall` classes extend a shared `ObjectWithPosition` class. This enables them to have a `position` subfield (which specifies their `width`, `height`, and `x`/`y` coordinates). For a given `position` you can get the adjacent coordinates by `position.adjacents` which returns an array of `Position` objects.
-
-### Structuring actions
-
-Your strategy (implemented in `handler.js`) should return an array of `Action` objects. 
-
-Each turn an agent (HQ, each fighter, each citizen) may execute one action. These are:
-- HQs can spawn citizens of fighters
-- Citizens can move to another position on the board
-- Fighters can move to another position on the board or attack an enemy agent (HQ, citizen or fighter)
-
-These actions are represented by the following action types: `spawnCitizen`, `spawnFighter`, `move`, `attack`.
-
-The `Action` class takes 3 arguments: 
-- An `agent` that's of type `HQ`, `Citizen` or `Fighter`
-- An `actionType` that's one of `spawnCitizen`, `spawnFighter`, `move`, `attack`
-- An optional `args` field that takes a `Position` object for `move` and `attack` actions.
-
-Example actions:
-
-```
-import { Game, Action, Position } from "@meka-js/core";
-const game = Game.fromJSON(event.game);
-const myTeam = game.getTeam(event.teamId);
-const { hq, citizens, fighters } = myTeam;
-let actions = [];
-
-# Spawn a citizen at a random position (this will fail if myTeam.foodCount < 2)
-actions.push(new Action(hq, "spawnCitizen")); 
-
-# Spawn a fighter at a random position (this will fail if myTeam.foodCount < 4)
-actions.push(new Action(hq, "spawnFighter"));
-
-# Get first citizen
-const firstCitizen = citizens[0];
-const movePosition = new Position(firstCitizen.x + 1, firstCitizen.y + 1);
-# Moves the first citizen one square to the right and down
-actions.push(new Action(firstCitizen, "move", { position: movePosition }));
-
-const firstFighther = fighters[0];
-# Assuming there's an enemy agent one square to the right and down
-const attackPosition = new Position(firstFighther.x + 1, firstFighther.y + 1);
-actions.push(new Action(firstFighther, "attack", { position: attackPosition }));
-```
