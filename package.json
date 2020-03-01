@@ -8,7 +8,6 @@
     "dev": "tsc --watch"
   },
   "dependencies": {
-    "@meka-js/cli": "^0.0.12",
     "@meka-js/client": "^0.0.1",
     "@meka-js/core": "^0.0.13",
     "commander": "^4.1.1",
