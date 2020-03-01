@@ -69,7 +69,12 @@ You may notice that from the web version of MEKA that if you drop from or leave 
 ## Run the `collectRandomFood` strategy
 Now let's start telling your units what to do through the command line. MEKA is all about human/computer collaboration. Initially, you'll likely play most of your games manually through the browser. But over time, you should be automating repeat tasks or strategies with code. Use your brain to develop strategy and be creative, and let your computer do everything else!
 
-One of the first tasks you'll likely automate is food collection. Food is needed to spawn new units, so it's important you're gathering food quickly and efficiently. The `collectRandomFood` script is not efficient, but it should give you an idea for how to structure your food collection strategy.
+One of the first tasks you'll likely automate is food collection. Food is needed to spawn new units, so it's important you're gathering food quickly and efficiently. The `collectRandomFood` script is not efficient, but it should give you an idea for how to structure your food collection strategy. Run the `collectRandomFood` strategy:
+```
+ts-node examples/collectRandomFood.ts
+```
+
+Note: make sure the game affiliated with the game ID you have stored in `.env` is still open or in-progress.
 
 You have three types of units on your team: citizens, fighters, and HQs. Each team has one HQ and starts with one citizen. HQs can spawn new citizens or fighters by spending food. Citizens can pick-up food and drop it off at the HQ. Note: there are multiple kinds of fighter units, but we'll talk about those at a later point.
 
@@ -79,6 +84,37 @@ We'll go over all the command and action types later on, but the `collectRandomF
 
 ### Bonus: efficient food collection
 The `collectRandomFood` strategy is clearly sub-optimal, because whenever a citizen is free, it assigns it a random food from anywhere on the board. So even if a citizen has a food next to it, the script may still send it across the board to get another food. So how would you assign citizens to foods more efficiently? How would you figure out which food is closest to each of your citizens—and is that even the best heuristic? `meka-core` includes some path-finding helper functions that may be a good place to start. Check out the `getPathTo` method in the `Citizen` class.
+
+## Run the `attackEnemyHQ` strategy
+The `attackEnemyHQ` strategy directs all of your idle fighters to attack the enemy HQ. Run it like this:
+```
+ts-node examples/attackEnemyHQ
+```
+The script will print the current HP of the enemy's HQ and tell you when you don't have any fighters or when you send an `AttackCommand`. As you can see in the example script, you can send an `AttackCommand` with `unit` (the fighter you want to direct) and a `targetId` argument (specifying the ID of the unit you want to attack).
+
+When a fighter receives an `AttackCommand`, it will the attack the target if it is in range (by executing an `AttackAction`), and move towards the target otherwise (by executing a `MoveAction`). A fighter's range and speed (measured in positions per tick) clearly affect its attack behavior. Here is a table showing the range and speed of fighters:
+
+Unit | Class | Speed | Range
+--- | --- | --- | ---
+Infantry | `InfantryFighter` | 1 | 1
+Cavalry | `CavalryFighter` | 2 | 1
+Ranged | `RangedFighter` | 1 | 3
+HQ | `HQ` | 0 | 3
+
+The `HQ` unit is the exception, because while it can attack units, it cannot move. So attack commands that are sent for targets out of range of an HQ will be ignored after three ticks. 
+
+The attack damage for each unit also differs. The units are designed to counter each other—similar to rock, paper, scissors. Infantry beat Cavalry, Cavalry beat Ranged, and Ranged beat Infantry. There are certainly exceptions where good micro-strategy will overcome the built-in advantages, but for the most part this triangle proves true.
+
+Here are the units with their hit points (HP), base attack damage, and attack bonuses:
+
+Unit | Class | HP | Attack | Bonus
+--- | --- | --- | --- | ---
+Infantry | `InfantryFighter` | 32 | 10 | +5 against Cavalry
+Cavalry | `CavalryFighter` | 30 | 6 | +6 attack against Ranged
+Ranged | `RangedFighter` | 24 | 7 | +4 attack against Infantry
+HQ | `HQ` | 500 | 6 | N/A
+Citizen | `Citizen` | 10 | 0 | N/A
+
 
 # Reference
 
