@@ -34,7 +34,7 @@ Duplicate `.env.example` in the `meka-boilerplate` directory and change its name
 `meka-boilerplate` needs a game to connet to. So go to your web version of MEKA and create a new game in the lobby by clicking the "Create a new game" button. Once you're redirected to the new game, copy the Game ID either from the URL (`https://playmeka.com/game/<Game ID>`) or the Game ID field on the page. Add the game ID to your `.env` file as `GAME_ID`.
 
 ## Run the `tick` strategy
-This repo includes a number of (simple) example scripts for your reference. Let's start with the `tick.ts` script which just connects to a game and prints out the current turn each tick (every 500ms). Take a look at `examples/tick.ts` for reference.
+This repo includes a number of (simple) example scripts for your reference. Let's start with the `tick.ts` script which just connects to a game and prints out the current turn each tick (every 500ms). Take a look at [examples/tick.ts](examples/tick.ts) for reference.
 
 Run the strategy in the `meka-boilerplate` directory:
 ```
@@ -52,7 +52,7 @@ Hi! {
   uid: '<your user ID>'
 }
 ```
-You'll notice that no ticks seem to be coming through. That's likely because the game hasn't actually started! Games won't begin until two users are present and mark themselves both as **ready**. Head back to the web version of MEKA and mark yourself as ready. If no one has shown up to play you, send the link to a friend or create a second account for yourself.
+You'll notice that no ticks seem to be coming through. That's likely because the game hasn't actually started! Games won't begin until two users are present and mark themselves both as **ready**. Head back to the web version of MEKA and mark yourself as ready. If no one has shown up to play you, send the link to a friend or create a second account for yourself (with a different Github account).
 
 Keep the `tick.ts` process open this whole time, and when the game finally starts, you should see output like below in your console:
 ```
@@ -83,7 +83,7 @@ You communicate with your units by sending **commands** to them. When you send c
 We'll go over all the command and action types later on, but the `collectRandomFood` script uses two commands: `PickUpFoodCommand` and `DropOffFoodCommand`. These are self-explanatory, but you send a `PickUpFoodCommand` to tell one of your citizens to pick-up a particular food (specified by `foodId`), and you send a `DropOffFoodCommand` to tell a citizen to deposit a food that it is carrying at the HQ (specified by `hqId`). Note: a citizen can carry only one food at a time.
 
 ### Bonus: efficient food collection
-The `collectRandomFood` strategy is clearly sub-optimal, because whenever a citizen is free, it assigns it a random food from anywhere on the board. So even if a citizen has a food next to it, the script may still send it across the board to get another food. So how would you assign citizens to foods more efficiently? How would you figure out which food is closest to each of your citizens—and is that even the best heuristic? `meka-core` includes some path-finding helper functions that may be a good place to start. Check out the `getPathTo` method in the `Citizen` class.
+The `collectRandomFood` strategy is clearly sub-optimal, because whenever a citizen is free, it assigns it a random food from anywhere on the board. So even if a citizen has a food next to it, the script may still send it across the board to get another food. So how would you assign citizens to foods more efficiently? How would you figure out which food is closest to each of your citizens—and is that even the best heuristic? `meka-core` includes some path-finding helper functions that may be a good place to start. Check out the [`getPathTo`](https://github.com/playmeka/meka-core/blob/0935fe6fcc20b720740e5fa51c9b75e08eec73f5/src/Citizen.ts#L64) method in the `Citizen` class.
 
 ## Run the `attackEnemyHQ` strategy
 The `attackEnemyHQ` strategy directs all of your idle fighters to attack the enemy HQ. Run it like this:
