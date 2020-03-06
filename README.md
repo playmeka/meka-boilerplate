@@ -88,7 +88,7 @@ The `collectRandomFood` strategy is clearly sub-optimal, because whenever a citi
 ## Run the `attackEnemyHQ` strategy
 The `attackEnemyHQ` strategy directs all of your idle fighters to attack the enemy HQ. Run it like this:
 ```
-ts-node examples/attackEnemyHQ
+ts-node examples/attackEnemyHQ.ts
 ```
 The script will print the current HP of the enemy's HQ and tell you when you don't have any fighters or when you send an `AttackCommand`. As you can see in the example script, you can send an `AttackCommand` with `unit` (the fighter you want to direct) and a `targetId` argument (specifying the ID of the unit you want to attack).
 
@@ -114,6 +114,24 @@ Cavalry | `CavalryFighter` | 30 | 6 | +6 attack against Ranged
 Ranged | `RangedFighter` | 24 | 7 | +4 attack against Infantry
 HQ | `HQ` | 500 | 6 | N/A
 Citizen | `Citizen` | 10 | 0 | N/A
+
+## Run the `spawnUnits` strategy
+The `spawnUnits` strategy is an example of programmatically spawning new units. The script will try to spawn new citizens until you have two citizens, and then try to spawn one of the three fighter units (infantry, ranged, or cavalry). 
+```
+ts-node examples/spawnUnits.ts
+```
+You can spawn one new citizen or fighter per click, assuming you have enough food collected. The units have different costs, which you can see by checking the `settings` object on your team.
+```
+const team = new Team(...);
+team.settings.cost;
+> {
+  Citizen: 2,
+  InfantryFighter: 4,
+  RangedFighter: 4,
+  CavalryFighter: 3
+}
+```
+The numbers above correspond to the amount of food you have to spend to spawn each of the units. 
 
 ## Use `commander.js` to pass arguments through CLI
 
