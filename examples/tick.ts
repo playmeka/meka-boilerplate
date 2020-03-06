@@ -4,8 +4,8 @@ import { MekaClient } from "@meka-js/client";
 // Declare Meka config using environment variables
 const mekaConfig = {
   gameId: process.env.GAME_ID || "",
-  apiUrl: process.env.MEKA_API_URL || "http://localhost:3000",
-  webSocketUrl: process.env.MEKA_WEB_SOCKET_URL || "ws://localhost:3000",
+  apiUrl: process.env.MEKA_API_URL || "https://api.meka.gg",
+  webSocketUrl: process.env.MEKA_WEB_SOCKET_URL || "ws://api.meka.gg",
   apiKey: process.env.MEKA_API_KEY || "",
   apiSecret: process.env.MEKA_API_SECRET || ""
 };
