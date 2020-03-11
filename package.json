@@ -7,7 +7,7 @@
     "dev": "tsc --watch"
   },
   "dependencies": {
-    "@meka-js/client": "^0.0.12",
+    "@meka-js/client": "^0.0.13",
     "@meka-js/core": "^0.0.20",
     "@types/lodash": "^4.14.149",
     "commander": "^4.1.1",
