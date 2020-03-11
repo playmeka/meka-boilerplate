@@ -1,17 +1,18 @@
 {
   "name": "meka-boilerplate",
   "version": "1.0.0",
-  "main": "dist/play.js",
   "license": "MIT",
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch"
   },
   "dependencies": {
-    "@meka-js/client": "^0.0.11",
+    "@meka-js/client": "^0.0.13",
     "@meka-js/core": "^0.0.20",
+    "@types/lodash": "^4.14.149",
     "commander": "^4.1.1",
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
     "@types/node": "^13.7.1",

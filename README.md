@@ -25,19 +25,19 @@ yarn install
 
 ## Create a MEKA account
 
-If you don't already have a MEKA account, go create one now. MEKA uses Github for authentication, so go to this link to sign up: https://playmeka.com.
+If you don't already have a MEKA account, go create one now. MEKA uses Github for authentication, so go to this link to sign up: https://meka.gg.
 
 ## Get your MEKA API credentials
 
-Once you have a MEKA account, click on your username in the top right corner or go to [settings](https://playmeka.com/settings). Scroll to the bottom of the page to get your `API KEY` and `API SECRET`. These will be used to authenticate you when interacting with the MEKA game engine.
+Once you have a MEKA account, click on your username in the top right corner or go to [settings](https://meka.gg/settings). Scroll to the bottom of the page to get your `API KEY` and `API SECRET`. These will be used to authenticate you when interacting with the MEKA game engine.
 
 ## Set up your local .env
 
-Duplicate `.env.example` in the `meka-boilerplate` directory and change its name to `.env`. Copy and paste your API key and secret into `.env` as the values for `MEKA_API_KEY` and `MEKA_API_SECRET` respectively. These values will be automatically be imported as environment variables when you run your code.
+Duplicate `.env.example` in the `meka-boilerplate` directory and change its name to `.env`. Copy and paste your API key and secret into `.env` as the values for `MEKA_API_KEY` and `MEKA_API_SECRET` respectively. These values will be automatically imported as environment variables when you run your code.
 
 ## Start a game
 
-`meka-boilerplate` needs a game to connet to. So go to your web version of MEKA and create a new game in the lobby by clicking the "Create a new game" button. Once you're redirected to the new game, copy the Game ID either from the URL (`https://playmeka.com/game/<Game ID>`) or the Game ID field on the page. Add the game ID to your `.env` file as `GAME_ID`.
+`meka-boilerplate` needs a game to connect to. So go to your web version of MEKA and create a new game in the lobby by clicking the "Create a new game" button. Once you're redirected to the new game, copy the Game ID either from the URL (`https://meka.gg/game/<Game ID>`) or the Game ID field on the page. Add the game ID to your `.env` file as `GAME_ID`.
 
 ## Run the `tick` strategy
 
